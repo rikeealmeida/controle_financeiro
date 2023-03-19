@@ -1,0 +1,60 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="ControleFinanceiro.Views.TransactionAdd"
+             Title="TransactionAdd">
+    <VerticalStackLayout Spacing="10" Padding="15,15" >
+
+        <Border BackgroundColor="Black" Padding="15,5" StrokeShape="RoundRectangle 30" Stroke="transparent" >
+            <Grid ColumnDefinitions="*,30" RowDefinitions="auto">
+                <Label
+            HorizontalOptions="Center"
+            VerticalOptions="Center"
+            Text="Novo"
+            TextColor="White"
+            Grid.Row="0"
+            Grid.Column="0"
+            />
+                <Button
+            Padding="0"
+            Margin="0"
+            BackgroundColor="Transparent"
+            Clicked="CloseAddTransaction"
+            Text="X"
+            TextColor="White"
+            HorizontalOptions="Center"
+            Grid.Row="0"
+            Grid.Column="1"
+            />
+            </Grid>
+        </Border>
+
+        <Label TextColor="Red" x:Name="LabelError" IsVisible="false" Margin="30"/>
+
+        <Grid  ColumnDefinitions="*,*" Margin="15,0">
+            <RadioButton
+                x:Name="RadioIncome"
+            Padding="5,0"
+            IsChecked="true"
+            Content="Receita"
+            Grid.Column="0"
+            />
+            <RadioButton
+                x:Name="RadioExpenses"
+            Padding="5,0"
+            HorizontalOptions="End"
+            Content="Despesa"
+            Grid.Column="1"
+            />
+        </Grid>
+
+        <Entry x:Name="EntryName" Placeholder="Nome" />
+        <DatePicker x:Name="DatePickerDate"/>
+        <Entry x:Name="EntryValue" Placeholder="Valor" />
+        <Button
+         HorizontalOptions="Center"
+         Text="Salvar"
+            Clicked="onButtonClickedSave"
+         />
+    </VerticalStackLayout>
+</ContentPage>
