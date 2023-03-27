@@ -4,9 +4,16 @@
              x:Class="ControleFinanceiro.Views.TransactionList"
              Title="Transações"
              NavigationPage.HasNavigationBar="False"
+             xmlns:converters="clr-namespace:ControleFinanceiro.Libraries.Converters"
              >
     <ContentPage.Resources>
         <ResourceDictionary Source="/Resources/Styles/Colors.xaml"/>
+        <ResourceDictionary>
+            <converters:TransactionValueColorConverter x:Key="TransactionValueColorConverter" />
+            <converters:TransactionValueConverter x:Key="TransactionValueConverter" />
+            <converters:TransactionNameConverter x:Key="TransactionNameConverter" />
+            <converters:TransactionNameColorConverter x:Key="TransactionNameColorConverter" />
+        </ResourceDictionary>
     </ContentPage.Resources>
 
     <VerticalStackLayout >
@@ -14,12 +21,21 @@
             <CollectionView.ItemTemplate>
                 <DataTemplate>
                     <Grid ColumnDefinitions="60, *, Auto" Padding="15">
-                        <Label BackgroundColor="White" Text="S" VerticalOptions="Center" HorizontalOptions="Center" FontSize="20"/>
+                        <Grid.GestureRecognizers>
+                            <TapGestureRecognizer Tapped="Transaction_Edit" CommandParameter="{Binding .}"/>
+                        </Grid.GestureRecognizers>
+                        <Border StrokeShape="RoundRectangle 20" BackgroundColor="{Binding Name, Converter={StaticResource TransactionNameColorConverter}}" HeightRequest="40" WidthRequest="40" Stroke="transparent">
+                            <Border.GestureRecognizers>
+                                <TapGestureRecognizer  Tapped="DeleteTransaction" CommandParameter="{Binding .}"/>
+                            </Border.GestureRecognizers>
+                            <Label  Text="{Binding Name, Converter={StaticResource TransactionNameConverter}}" TextTransform="Uppercase" FontAttributes="Bold" VerticalOptions="Center" HorizontalOptions="Center" FontSize="20"/>
+                        </Border>
                         <VerticalStackLayout  Grid.Column="1" Spacing="5">
                             <Label Text="{Binding Name}" />
-                            <Label Text="{Binding Date, StringFormat='{0:dd/MM/yyy as h:m:s}'}" TextColor="#BABABA"/>
+                            <Label Text="{Binding Date, StringFormat='{0:dd/MM/yyy}
+                                '}" TextColor="#BABABA"/>
                         </VerticalStackLayout>
-                        <Label Text="{Binding Value, StringFormat='{0:C}'}" Grid.Column="2" VerticalOptions="Center" HorizontalOptions="Center" TextColor="{StaticResource Tertiary}"/>
+                        <Label Text="{Binding ., Converter={StaticResource TransactionValueConverter}}" Grid.Column="2" VerticalOptions="Center" HorizontalOptions="Center" TextColor="{Binding ., Converter={converters:TransactionValueColorConverter}}"/>
                     </Grid>
                 </DataTemplate>
             </CollectionView.ItemTemplate>
@@ -27,13 +43,13 @@
         <Border  BackgroundColor="{StaticResource Black}" Stroke="transparent" Margin="5" StrokeShape="RoundRectangle 30">
             <Grid ColumnDefinitions="*,80" RowDefinitions="Auto, Auto, 30, Auto, Auto" Padding="15">
                 <Label Text="Saldo" FontSize="20" TextColor="DarkGrey" Grid.Row="0" />
-                <Label Text="R$ 2.760.00" FontSize="35" TextColor="White" FontAttributes="Bold" Grid.Row="1"/>
+                <Label x:Name="LabelBalance"  FontSize="35" TextColor="White" FontAttributes="Bold" Grid.Row="1"/>
 
                 <Button Text="+"
                                 Grid.Column="1"
                                 Grid.RowSpan="2"
                                 CornerRadius="25"
-                                Padding="14"
+                                Padding="0"
                                 FontSize="30"
                                 VerticalOptions="Center"
                                 HorizontalOptions="Center"
@@ -43,10 +59,10 @@
                                 />
 
                 <Label Text="Receita" TextColor="DarkGray"  FontSize="11" Grid.Row="3"/>
-                <Label Text="R$ 3.600.00" TextColor="White" FontAttributes="Bold" Grid.Row="4"/>
+                <Label x:Name="LabelIncome" TextColor="White" FontAttributes="Bold" Grid.Row="4"/>
 
                 <Label Text="Despesas" TextColor="DarkGray" FontSize="11" Grid.Row="3" Grid.Column="1"/>
-                <Label Text="R$ 840.00" TextColor="White" FontAttributes="Bold" Grid.Row="4" Grid.Column="1"/>
+                <Label x:Name="LabelExpenses"  TextColor="White" FontAttributes="Bold" Grid.Row="4" Grid.Column="1"/>
             </Grid>
         </Border>
     </VerticalStackLayout>

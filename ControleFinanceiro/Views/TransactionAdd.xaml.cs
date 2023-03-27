@@ -1,4 +1,5 @@
 ﻿using System.Text;
+using CommunityToolkit.Mvvm.Messaging;
 using ControleFinanceiro.Models;
 using ControleFinanceiro.Repositories;
 
@@ -29,8 +30,8 @@ public partial class TransactionAdd : ContentPage
             return;
         saveTransactionOnDatabase();
         Navigation.PopModalAsync();
-        var count = _repository.GetAll().Count;
-        App.Current.MainPage.DisplayAlert("Mensagem!", $"Existem {count} registros no banco de dados!", "Ok"); 
+        WeakReferenceMessenger.Default.Send<string>(string.Empty);
+        App.Current.MainPage.DisplayAlert("Mensagem!", $"Registro realizado com sucesso!", "Ok"); 
 
     }
 
