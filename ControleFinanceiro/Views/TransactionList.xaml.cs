@@ -58,12 +58,42 @@ public partial class TransactionList : ContentPage
 
     private async void DeleteTransaction(System.Object sender, Microsoft.Maui.Controls.TappedEventArgs e)
     {
+        await AnimateBorder((Border)sender, true);
+
         bool result = await App.Current.MainPage.DisplayAlert("Excluir", "Tem certeza que deseja excluir?", "Sim", "Não");
         if (result)
         {
             Transaction transaction = (Transaction)e.Parameter;
             _repository.DeleteTransaction(transaction);
             RefreshData();
+        }
+        else
+            await AnimateBorder((Border)sender, false);
+    }
+
+    private Color _borderOriginalBackgroundColor;
+    private String _labelOriginalText;
+
+    private async Task AnimateBorder(Border border, bool IsDeleteAnimation)
+    {
+        var label = (Label)border.Content;
+        if (IsDeleteAnimation)
+        {
+            _borderOriginalBackgroundColor = border.BackgroundColor;
+            _labelOriginalText = label.Text;
+            await border.RotateYTo(90, 150);
+            border.BackgroundColor = Colors.Red;
+            label.TextColor = Colors.White;
+            label.Text = "X";
+            await border.RotateYTo(180, 150);
+        }
+        else
+        {
+            await border.RotateYTo(90, 150);
+            border.BackgroundColor = _borderOriginalBackgroundColor;
+            label.TextColor = Colors.Black;
+            label.Text = _labelOriginalText;
+            await border.RotateYTo(0, 150);
         }
     }
 }
