@@ -26,6 +26,19 @@ public partial class TransactionList : ContentPage
     }
 
 
+    private void FilterData()
+    {
+        var items = _repository.GetAll();
+        var filteredItems = items.Where(x => (x.Date.Date >= FirstDatePicker.Date.Date && x.Date.Date <= SecondDatePicker.Date.Date ));
+        TransactionsCollectionView.ItemsSource = filteredItems;
+        var totalIncome = filteredItems.Where(a => a.TransactionType == Models.TransactionType.Income).Sum(a => a.Value);
+        var totalExpenses = filteredItems.Where(a => a.TransactionType == Models.TransactionType.Expenses).Sum(a => a.Value);
+        var balance = totalIncome - totalExpenses;
+        LabelIncome.Text = totalIncome.ToString("C");
+        LabelExpenses.Text = totalExpenses.ToString("C");
+        LabelBalance.Text = balance.ToString("C");
+    }
+
 
     private void RefreshData()
     {
@@ -96,4 +109,10 @@ public partial class TransactionList : ContentPage
             await border.RotateYTo(0, 150);
         }
     }
+
+    private void Button_Clicked(object sender, EventArgs e)
+    {
+        FilterData();
+    }
+
 }

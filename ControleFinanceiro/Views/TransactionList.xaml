@@ -16,8 +16,24 @@
         </ResourceDictionary>
     </ContentPage.Resources>
 
-    <Grid RowDefinitions="*,200" >
-        <CollectionView  x:Name="TransactionsCollectionView">
+    <Grid RowDefinitions="100, *,200" >
+        <Border Grid.Row="0" Stroke="transparent">
+            <VerticalStackLayout Padding="0,5">
+                <Grid ColumnDefinitions="*,*" RowDefinitions="*,*" VerticalOptions="Center">
+                    <HorizontalStackLayout Grid.Column="0" VerticalOptions="Center" HorizontalOptions="Center" Spacing="5" >
+                        <Label Text="First date" VerticalOptions="Center"/>
+                        <DatePicker x:Name="FirstDatePicker" />
+                    </HorizontalStackLayout>
+                    <HorizontalStackLayout Grid.Column="1" VerticalOptions="Center" HorizontalOptions="Center" Spacing="5" >
+                        <Label Text="Last date" VerticalOptions="Center" />
+                        <DatePicker x:Name="SecondDatePicker"/>
+                    </HorizontalStackLayout>
+
+                </Grid>
+                <Button Text="Aplicar" Clicked="Button_Clicked" HeightRequest="25" FontSize="12" Padding="10,0" VerticalOptions="Center" HorizontalOptions="Center"/>
+            </VerticalStackLayout>
+        </Border>
+        <CollectionView Grid.Row="1" x:Name="TransactionsCollectionView">
             <CollectionView.ItemTemplate>
                 <DataTemplate>
                     <Grid ColumnDefinitions="60, *, Auto" Padding="15">
@@ -40,7 +56,7 @@
                 </DataTemplate>
             </CollectionView.ItemTemplate>
         </CollectionView>
-        <Border Grid.Row="1"  BackgroundColor="{StaticResource Black}" Stroke="transparent" Margin="5" StrokeShape="RoundRectangle 30">
+        <Border Grid.Row="2"  BackgroundColor="{StaticResource Black}" Stroke="transparent" Margin="5" StrokeShape="RoundRectangle 30">
             <Grid ColumnDefinitions="*,80" RowDefinitions="Auto, Auto, 30, Auto, Auto" Padding="15">
                 <Label Text="Saldo" FontSize="20" TextColor="DarkGrey" Grid.Row="0" />
                 <Label x:Name="LabelBalance"  FontSize="35" TextColor="White" FontAttributes="Bold" Grid.Row="1"/>
